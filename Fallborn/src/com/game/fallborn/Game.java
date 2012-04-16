@@ -3,14 +3,12 @@ package com.game.fallborn;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.screen.Screen;
+import com.game.fallborn.things.Player;
 
 public class Game extends Canvas implements Runnable{
 	
@@ -24,6 +22,8 @@ public class Game extends Canvas implements Runnable{
 	private boolean running = false;
 	
 	public static final String GAME_NAME = "Fallborn";
+	public Player player;
+	public InputHandler input;
 	
 	public static final int GAME_WIDTH = 320;
 	//Maintains a nice aspect ratio
@@ -33,6 +33,8 @@ public class Game extends Canvas implements Runnable{
 	public Game() {
 		frame = new JFrame(GAME_NAME);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
+		player = new Player(30, 30);
+		input = new InputHandler(this);
 	}
 	
 	public void start() {
@@ -43,8 +45,25 @@ public class Game extends Canvas implements Runnable{
 		}
 	}
 	public void run() {
+		long previousTime = System.nanoTime();
+		double secondsPerTick = 1 / 60.0;
+		double unprocessedSeconds = 0;
+		boolean ticked = false;
+		requestFocus();
+		
 		while(running) {
-		render();
+			long currentTime = System.nanoTime();
+			unprocessedSeconds += (currentTime - previousTime) / 1000000000.0;
+			previousTime = currentTime;
+			while(unprocessedSeconds >= secondsPerTick) {
+				unprocessedSeconds -= secondsPerTick;
+				tick();
+				ticked = true;
+			}
+			
+			if(ticked) {
+				render();
+			}
 		}
 	}
 	public void stop() {
@@ -59,8 +78,10 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick() {
-		
+		//input.tick();
+		player.tick(input);
 	}
+	
 	public void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null) {
@@ -68,7 +89,7 @@ public class Game extends Canvas implements Runnable{
 			return;
 		}
 		
-		screen.render();
+		screen.render(player);
 		
 		Graphics g = bs.getDrawGraphics();
 		
@@ -84,6 +105,7 @@ public class Game extends Canvas implements Runnable{
 		frame.setSize(GAME_WIDTH, GAME_HEIGHT);
 		frame.setAlwaysOnTop(true);
 		frame.setFocusable(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.add(game);
