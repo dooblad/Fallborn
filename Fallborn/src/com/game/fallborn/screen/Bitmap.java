@@ -12,4 +12,15 @@ public class Bitmap extends Canvas{
 		pixels = new int[width * height];
 	}
 	
+	public void blit(Bitmap bitmap, int xOffset, int yOffset) {
+		for(int y = 0; y < bitmap.height; y++) {
+			int yy = y + yOffset;
+			for(int x = 0; x < bitmap.width; x++) {
+				int xx = x + xOffset;
+				int color = bitmap.pixels[x + y * bitmap.width];
+				if(color < 0) pixels[xx + yy * width] = color;
+			}
+		}
+	}
+	
 }

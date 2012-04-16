@@ -36,15 +36,26 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void start() {
+		if(!running) {
 		thread = new Thread(this);
 		running = true;
 		thread.start();
+		}
 	}
 	public void run() {
+		while(running) {
 		render();
+		}
 	}
 	public void stop() {
-		
+		if(running) {
+			try {
+				thread.join();
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
 	}
 	
 	public void tick() {
@@ -57,15 +68,14 @@ public class Game extends Canvas implements Runnable{
 			return;
 		}
 		
+		screen.render();
+		
 		Graphics g = bs.getDrawGraphics();
-		try {
-		BufferedImage image = ImageIO.read(new File("res/fallBorn.png"));
-		g.drawImage(image, 0, 0, null);
+		
+		g.drawImage(screen.image, 0, 0, null);
+		
 		g.dispose();
 		bs.show();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static void main(String[] args) {
