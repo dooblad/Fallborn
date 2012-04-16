@@ -17,6 +17,7 @@ public class Screen extends Bitmap{
 	
 	public void render(Player player) {
 		fill(0xFF0044D6);
+		//blit(Art.sheetTest[1][0], 10, 10);
 		player.render(this);
 	}
 }
