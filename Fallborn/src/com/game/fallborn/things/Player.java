@@ -32,7 +32,7 @@ public class Player extends Thing {
 		if (input.keys[KeyEvent.VK_SHIFT]) {
 			xSpeed *= sprintFactor;
 		}
-		System.out.println("XSpeed = " + xSpeed + " YSpeed = " + ySpeed);
+		
 
 		positionX += xSpeed;
 		positionY += ySpeed;
@@ -40,5 +40,9 @@ public class Player extends Thing {
 
 	public void render(Screen screen) {
 		screen.blit(Art.fallBorn, (int) (positionX + 0.5), (int) (positionY + 0.5));
+	}
+	
+	public void addGravity() {
+		
 	}
 }

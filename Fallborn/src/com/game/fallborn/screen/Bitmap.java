@@ -16,9 +16,11 @@ public class Bitmap extends Canvas{
 		for(int y = 0; y < bitmap.height; y++) {
 			int yy = y + yOffset;
 			if(yy < 0 || yy >= height) continue;
+			
 			for(int x = 0; x < bitmap.width; x++) {
 				int xx = x + xOffset;
 				if(xx < 0 || xx >= width) continue;
+				
 				int color = bitmap.pixels[x + y * (bitmap.width)];
 				if(color < 0) pixels[xx + yy * width] = color;
 			}

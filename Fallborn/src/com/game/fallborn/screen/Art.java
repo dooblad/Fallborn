@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class Art {
 	public static final Bitmap fallBorn = loadImage("res/fallBorn.png");
-	//public static final Bitmap[][] sheetTest = loadSpriteSheet("res/sheetTest.png", 5, 5);
+	public static final Bitmap[][] sheetTest = loadSpriteSheet("res/sheetTest.png", 5, 5);
 
 	private static Bitmap loadImage(String URL) {
 		try {
@@ -33,9 +33,15 @@ public class Art {
 			int tileWidth = width / tilesX;
 			int tileHeight = height / tilesY;
 			Bitmap[][] result = new Bitmap[tilesX][tilesY];
-			for(int y = 0; y < tilesY; y++) {
-				for(int x = 0; x < tilesX; x++) {
-					image.getRGB(x * tileWidth, y * tileHeight, tileWidth, tileHeight, result[x][y].pixels, 0, tileWidth);
+			for(int x = 0; x < tilesX; x++) {
+				for(int y = 0; y < tilesY; y++) {
+					for(int xx = 0; x < tileWidth; x++) {
+						for(int yy = 0; y < tileHeight; y++) {
+							//4 for loops, you know what they're for
+							//image.getRGB(x, y);
+							
+						}
+					}
 				}
 			}
 			return result;

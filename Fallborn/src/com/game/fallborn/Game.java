@@ -1,6 +1,8 @@
 package com.game.fallborn;
 
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -20,6 +22,7 @@ public class Game extends Canvas implements Runnable{
 	private Screen screen;
 	private Thread thread;
 	private boolean running = false;
+	private int fpsDisplay = 0;
 	
 	public static final String GAME_NAME = "Fallborn";
 	public Player player;
@@ -49,6 +52,8 @@ public class Game extends Canvas implements Runnable{
 		double secondsPerTick = 1 / 60.0;
 		double unprocessedSeconds = 0;
 		boolean ticked = false;
+		int fps = 0;
+		int tickCount = 0;
 		requestFocus();
 		
 		while(running) {
@@ -59,10 +64,17 @@ public class Game extends Canvas implements Runnable{
 				unprocessedSeconds -= secondsPerTick;
 				tick();
 				ticked = true;
+				tickCount++;
+				if(tickCount % 60 == 0) {
+					fpsDisplay = fps;
+					fps = 0;
+				}
 			}
 			
 			if(ticked) {
 				render();
+				//ticked = false;
+				fps++;
 			}
 		}
 	}
@@ -78,7 +90,6 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick() {
-		//input.tick();
 		player.tick(input);
 	}
 	
@@ -93,7 +104,11 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.drawImage(screen.image, 0, 0, null);
+		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
+		
+		g.setColor(Color.GREEN);
+		g.setFont(new Font("courier new", 0, 15));
+		g.drawString("FPS: " + fpsDisplay, 3, 13);
 		
 		g.dispose();
 		bs.show();
@@ -102,7 +117,7 @@ public class Game extends Canvas implements Runnable{
 	public static void main(String[] args) {
 		game = new Game();
 		
-		frame.setSize(GAME_WIDTH, GAME_HEIGHT);
+		frame.setSize(GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE);
 		frame.setAlwaysOnTop(true);
 		frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
