@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import com.game.fallborn.input.InputHandler;
+import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Screen;
 import com.game.fallborn.things.Player;
 
@@ -26,6 +27,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public static final String GAME_NAME = "Fallborn";
 	public Player player;
+	public Level level;
 	public InputHandler input;
 	
 	public static final int GAME_WIDTH = 320;
@@ -36,6 +38,7 @@ public class Game extends Canvas implements Runnable{
 	public Game() {
 		frame = new JFrame(GAME_NAME);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
+		level = new Level("res/level.png", 20);
 		player = new Player(30, 30);
 		input = new InputHandler(this);
 	}
@@ -73,7 +76,7 @@ public class Game extends Canvas implements Runnable{
 			
 			if(ticked) {
 				render();
-				//ticked = false;
+				//ticked = false; uncomment to unlimit
 				fps++;
 			}
 		}
@@ -100,7 +103,7 @@ public class Game extends Canvas implements Runnable{
 			return;
 		}
 		
-		screen.render(player);
+		screen.render(level, player);
 		
 		Graphics g = bs.getDrawGraphics();
 		
