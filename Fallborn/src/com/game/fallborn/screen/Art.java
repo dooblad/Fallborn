@@ -21,10 +21,10 @@ public class Art {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	private static Bitmap[][] loadSpriteSheet(String URL, int tilesX, int tilesY) {
 		try {
 			BufferedImage image = ImageIO.read(new File(URL));
@@ -33,21 +33,23 @@ public class Art {
 			int tileWidth = width / tilesX;
 			int tileHeight = height / tilesY;
 			Bitmap[][] result = new Bitmap[tilesX][tilesY];
-			for(int x = 0; x < tilesX; x++) {
-				for(int y = 0; y < tilesY; y++) {
-					for(int xx = 0; x < tileWidth; x++) {
-						for(int yy = 0; y < tileHeight; y++) {
-							//4 for loops, you know what they're for
-							//image.getRGB(x, y);
-							
+		
+			for (int x = 0; x < tilesX; x++) {
+				for (int y = 0; y < tilesY; y++) {
+					result[x][y] = new Bitmap(tileWidth, tileHeight);
+					for (int yy = 0; yy < tileHeight; yy++) {
+						for (int xx = 0; xx < tileWidth; xx++) {
+							int xxx = xx + x * tileWidth;
+							int yyy = yy + y * tileHeight;
+							result[x][y].pixels[xx + yy * tileWidth] = image.getRGB(xxx, yyy);
 						}
 					}
 				}
 			}
 			return result;
-		} catch(IOException e) {
-			
+		} catch (IOException e) {
+
 		}
-		return null;	
+		return null;
 	}
 }
