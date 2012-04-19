@@ -18,7 +18,6 @@ public class InputHandler implements KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
-		System.out.println(e.getKeyCode());
 	}
 
 	public void keyReleased(KeyEvent e) {

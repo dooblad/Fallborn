@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.level.Level;
+import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.Screen;
 import com.game.fallborn.things.Player;
 
@@ -39,7 +40,7 @@ public class Game extends Canvas implements Runnable{
 		frame = new JFrame(GAME_NAME);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
 		level = new Level("res/level.png", 20);
-		player = new Player(30, 30);
+		player = new Player(Art.fallBorn, 30, 60);
 		input = new InputHandler(this);
 	}
 	
@@ -93,7 +94,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick() {
-		player.tick(input);
+		player.tick(input, level);
 	}
 	
 	public void render() {
@@ -109,9 +110,11 @@ public class Game extends Canvas implements Runnable{
 		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, 80, 15);
 		g.setColor(Color.GREEN);
 		g.setFont(new Font("courier new", 0, 15));
-		g.drawString("FPS: " + fpsDisplay, 3, 13);
+		g.drawString("FPS: " + fpsDisplay, 3, 11);
 		
 		g.dispose();
 		bs.show();
