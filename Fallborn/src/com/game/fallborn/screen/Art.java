@@ -8,7 +8,9 @@ import javax.imageio.ImageIO;
 
 public class Art {
 	public static final Bitmap fallBorn = loadImage("res/fallBorn.png");
+	public static final Bitmap[][] fallBornSheet = loadSpriteSheet("res/fallBornSheet.png", 15, 3);
 	public static final Bitmap[][] tiles = loadSpriteSheet("res/tiles.png", 5, 5);
+	public static final Bitmap lightOverlay = loadImage("res/lightOverlay.png");
 
 	private static Bitmap loadImage(String URL) {
 		try {

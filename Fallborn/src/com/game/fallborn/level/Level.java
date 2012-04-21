@@ -14,6 +14,7 @@ public class Level {
 	public int[][] tiles;
 	public int width, height;
 	public int tileSize;
+	public int xScroll, yScroll;
 
 	public Level(String URL, int tileSize) {
 		try {
@@ -64,13 +65,13 @@ public class Level {
 			for (int y = 0; y < height; y++) {
 				switch (tiles[x][y]) {
 				case TileID.GRASS:
-					screen.blit(Art.tiles[0][0], x * tileSize, y * tileSize);
+					screen.blit(Art.tiles[0][0], x * tileSize - xScroll, y * tileSize - yScroll);
 					break;
 				case TileID.SHRUB:
-					screen.blit(Art.tiles[1][0], x * tileSize, y * tileSize);
+					screen.blit(Art.tiles[1][0], x * tileSize - xScroll, y * tileSize - yScroll);
 					break;
 				case TileID.STONE:
-					screen.blit(Art.tiles[2][0], x * tileSize, y * tileSize);
+					screen.blit(Art.tiles[2][0], x * tileSize - xScroll, y * tileSize - yScroll);
 				default:
 					continue;
 				}
@@ -87,34 +88,36 @@ public class Level {
 	}
 
 	public void collided(Thing t) {
-		//System.out.println(tiles[getTileX(t.positionX)][getTileY(t.positionY)] != TileID.GRASS);
-		for (int i = 0; i < t.collisions.length; i++) {
-			t.collisions[i] = false;
-		}
-		
-		for (int i = 1; i < t.width -1; i++) {
-			if (tiles[getTileX(t.positionX + i)][getTileY(t.positionY)] != TileID.GRASS) {
-				//System.out.println("Top");
-				t.collisions[Thing.TOP] = true;
+		do {
+			for (int i = 0; i < t.collisions.length; i++) {
+				t.collisions[i] = false;
+			}
+			
+			for (int i = 1; i < t.width - 1; i++) {
+				if (tiles[getTileX(t.positionX + t.xSpeed + i)][getTileY(t.positionY + t.ySpeed + (t.height / 1.25))] != TileID.GRASS) {
+					t.collisions[Thing.TOP] = true;
+					t.ySpeed++;
+				}
+			}
+			for (int i = 1; i < t.width - 1; i++) {
+				if (tiles[getTileX(t.positionX + t.xSpeed + i)][getTileY(t.positionY + t.ySpeed + (t.height / 1.15))] != TileID.GRASS) {
+					t.collisions[Thing.BOTTOM] = true;
+					t.ySpeed--;
+				}
+			}
+			for (int i = (int) ((t.height / 1.25) + 1); i < (t.height / 1.15) - 1; i++) {
+				if (tiles[getTileX(t.positionX + t.xSpeed)][getTileY(t.positionY + t.ySpeed + i)] != TileID.GRASS) {
+					t.collisions[Thing.LEFT] = true;
+					t.xSpeed++;
+				}
+			}
+			for (int i = (int) ((t.height / 1.25) + 1); i < (t.height / 1.15) - 1; i++) {
+				if (tiles[getTileX(t.positionX + t.width + t.xSpeed)][getTileY(t.positionY + t.ySpeed + i)] != TileID.GRASS) {
+					t.collisions[Thing.RIGHT] = true;
+					t.xSpeed--;
+				}
 			}
 		}
-		for (int i = 1; i < t.width - 1; i++) {
-			if (tiles[getTileX(t.positionX + i)][getTileY(t.positionY)] != TileID.GRASS) {
-				//System.out.println("Bottom");
-				t.collisions[Thing.BOTTOM] = true;
-			}
-		}
-		for (int i = 1; i < t.height - 1; i++) {
-			if (tiles[getTileX(t.positionX)][getTileY(t.positionY + i)] != TileID.GRASS) {
-				//System.out.println("Left");
-				t.collisions[Thing.LEFT] = true;
-			}
-		}
-		for (int i = 1; i < t.height - 1; i++) {
-			if (tiles[getTileX(t.positionX + t.width)][getTileY(t.positionY + i)] != TileID.GRASS) {
-				//System.out.println("Right");
-				t.collisions[Thing.RIGHT] = true;
-			}
-		}
+		while (t.collisions[Thing.TOP] || t.collisions[Thing.BOTTOM] || t.collisions[Thing.LEFT] || t.collisions[Thing.RIGHT]);
 	}
 }

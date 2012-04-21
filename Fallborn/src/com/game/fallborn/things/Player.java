@@ -10,46 +10,55 @@ import com.game.fallborn.screen.Screen;
 
 public class Player extends Thing {
 
-	public Player(Bitmap bitmap, int positionX, int positionY) {
+	public Player(Bitmap[][] bitmap, int positionX, int positionY) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.bitmap = bitmap;
-		this.width = bitmap.width;
-		this.height = bitmap.height;
+		this.width = bitmap[0][0].width;
+		this.height = bitmap[0][0].height;
 	}
 
-	public void tick(InputHandler input, Level level) {
+	public void tick(InputHandler input, Level level, Screen screen) {
 
-		if (input.keys[KeyEvent.VK_W])
+		if (input.keys[KeyEvent.VK_W]) {
 			ySpeed = -walkSpeed;
-		else if (input.keys[KeyEvent.VK_S])
+			walkTime++;
+		}
+		else if (input.keys[KeyEvent.VK_S]) {
 			ySpeed = walkSpeed;
-		else
+			walkTime++;
+		}
+		else {
 			ySpeed = 0;
+		}
 
-		if (input.keys[KeyEvent.VK_A])
+		if (input.keys[KeyEvent.VK_A]) {
 			xSpeed = -walkSpeed;
-		else if (input.keys[KeyEvent.VK_D])
+			walkTime++;
+		}
+		else if (input.keys[KeyEvent.VK_D]) {
 			xSpeed = walkSpeed;
-		else
+			walkTime++;
+		}
+		else {
 			xSpeed = 0;
+		}
+		
+		if(xSpeed == 0 && ySpeed == 0) {
+			walkTime = 0;
+		}
 
 		if (input.keys[KeyEvent.VK_SHIFT]) {
 			xSpeed *= sprintFactor;
+			ySpeed *= sprintFactor;
 		}
 		
 		level.collided(this);
 		
-		/*if(collisions[Thing.TOP] && collisions[Thing.LEFT] && collisions[Thing.RIGHT] && ySpeed > 0) {
-			ySpeed = 0;
-		}*/
-		if(collisions[Thing.TOP] && ySpeed > 0) {
+		if(collisions[Thing.TOP] && ySpeed < 0) {
 			ySpeed = 0;
 		}
-		/*if(collisions[Thing.BOTTOM] && collisions[Thing.LEFT] && collisions[Thing.RIGHT] && ySpeed < 0) {
-			ySpeed = 0;
-		}*/
-		if(collisions[Thing.BOTTOM] && ySpeed < 0) {
+		if(collisions[Thing.BOTTOM] && ySpeed > 0) {
 			ySpeed = 0;
 		}
 		if(collisions[Thing.LEFT] && xSpeed < 0) {
@@ -61,10 +70,17 @@ public class Player extends Thing {
 		
 		positionX += xSpeed;
 		positionY += ySpeed;
+		
+		//System.out.println("X: " + positionX + " Y: " + positionY);
+		
+		level.xScroll = (int) positionX - (screen.width - width) / 2;
+		level.yScroll = (int) positionY - (screen.height - height) / 2;
+		
+		//add walktime controller right here!
 	}
 
 	public void render(Screen screen) {
-		screen.blit(bitmap, (int) (positionX + 0.5), (int) (positionY + 0.5));
+		screen.blit(bitmap[0][0], (screen.width - width) / 2, (screen.height - height) / 2 /*(int) (positionX + 0.5), (int) (positionY + 0.5)*/);
 	}
 	
 	public void addGravity() {

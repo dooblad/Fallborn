@@ -19,7 +19,7 @@ public class Screen extends Bitmap{
 	}
 	
 	public void render(Level level, Player player) {
-		fill(0xFF000000);
+		//fill(0xFF000000);
 		//blit(Art.tiles[0][0], 40, 40);
 		level.render(this);
 		player.render(this);
