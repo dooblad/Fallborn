@@ -23,67 +23,69 @@ public class Player extends Thing {
 		if (input.keys[KeyEvent.VK_W]) {
 			ySpeed = -walkSpeed;
 			walkTime++;
-		}
-		else if (input.keys[KeyEvent.VK_S]) {
+		} else if (input.keys[KeyEvent.VK_S]) {
 			ySpeed = walkSpeed;
 			walkTime++;
-		}
-		else {
+		} else {
 			ySpeed = 0;
 		}
 
 		if (input.keys[KeyEvent.VK_A]) {
 			xSpeed = -walkSpeed;
 			walkTime++;
-		}
-		else if (input.keys[KeyEvent.VK_D]) {
+			facingRight = false;
+		} else if (input.keys[KeyEvent.VK_D]) {
 			xSpeed = walkSpeed;
 			walkTime++;
-		}
-		else {
+			facingRight = true;
+		} else {
 			xSpeed = 0;
 		}
-		
-		if(xSpeed == 0 && ySpeed == 0) {
+
+		if (xSpeed == 0 && ySpeed == 0) {
 			walkTime = 0;
 		}
 
 		if (input.keys[KeyEvent.VK_SHIFT]) {
 			xSpeed *= sprintFactor;
 			ySpeed *= sprintFactor;
+			walkTime++;
 		}
-		
+
 		level.collided(this);
-		
-		if(collisions[Thing.TOP] && ySpeed < 0) {
+
+		if (collisions[Thing.TOP] && ySpeed < 0) {
 			ySpeed = 0;
 		}
-		if(collisions[Thing.BOTTOM] && ySpeed > 0) {
+		if (collisions[Thing.BOTTOM] && ySpeed > 0) {
 			ySpeed = 0;
 		}
-		if(collisions[Thing.LEFT] && xSpeed < 0) {
+		if (collisions[Thing.LEFT] && xSpeed < 0) {
 			xSpeed = 0;
 		}
-		if(collisions[Thing.RIGHT] && xSpeed > 0) {
+		if (collisions[Thing.RIGHT] && xSpeed > 0) {
 			xSpeed = 0;
 		}
-		
+
 		positionX += xSpeed;
 		positionY += ySpeed;
-		
-		//System.out.println("X: " + positionX + " Y: " + positionY);
-		
+
 		level.xScroll = (int) positionX - (screen.width - width) / 2;
 		level.yScroll = (int) positionY - (screen.height - height) / 2;
-		
-		//add walktime controller right here!
+
+		// add walktime controller right here!
+		if(walkTime >= 10 * walkAnimationFactor) walkTime = 0;
 	}
 
 	public void render(Screen screen) {
-		screen.blit(bitmap[0][0], (screen.width - width) / 2, (screen.height - height) / 2 /*(int) (positionX + 0.5), (int) (positionY + 0.5)*/);
+		if (facingRight) {
+			screen.blit(bitmap[walkTime / walkAnimationFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
+		} else if (!facingRight) {
+			screen.blitReverse(bitmap[walkTime / walkAnimationFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
+		}
 	}
-	
+
 	public void addGravity() {
-		
+
 	}
 }

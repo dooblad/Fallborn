@@ -7,6 +7,8 @@ public class Thing {
 	public double xSpeed, ySpeed;
 	public double walkSpeed = 1.0;
 	public double sprintFactor = 2.0;
+	public boolean facingRight = true;
+	public int walkAnimationFactor = 4;
 	public int walkTime = 0;
 	public boolean[] collisions = new boolean[4];
 	public static final int TOP = 0;

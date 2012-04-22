@@ -27,6 +27,21 @@ public class Bitmap extends Canvas{
 		}
 	}
 	
+	public void blitReverse(Bitmap bitmap, int xOffset, int yOffset) {
+		for(int y = 0; y < bitmap.height; y++) {
+			int yy = y + yOffset;
+			if(yy < 0 || yy >= height) continue;
+			
+			for(int x = bitmap.width - 1; x >= 0; x--) {
+				int xx = bitmap.width - x + xOffset;
+				if(xx < 0 || xx >= width) continue;
+				
+				int color = bitmap.pixels[x + y * (bitmap.width)];
+				if(color < 0) pixels[xx + yy * width] = color;
+			}
+		}
+	}
+	
 	public void fill(int color) {
 		for(int i = 0; i < pixels.length; i++) {
 			pixels[i] = color;

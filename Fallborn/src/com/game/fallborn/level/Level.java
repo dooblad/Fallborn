@@ -65,13 +65,13 @@ public class Level {
 			for (int y = 0; y < height; y++) {
 				switch (tiles[x][y]) {
 				case TileID.GRASS:
-					screen.blit(Art.tiles[0][0], x * tileSize - xScroll, y * tileSize - yScroll);
+					screen.blit(Art.staticTiles[0][0], x * tileSize - xScroll, y * tileSize - yScroll);
 					break;
 				case TileID.SHRUB:
-					screen.blit(Art.tiles[1][0], x * tileSize - xScroll, y * tileSize - yScroll);
+					screen.blit(Art.buildingTiles[0][0], x * tileSize - xScroll, y * tileSize - yScroll);
 					break;
 				case TileID.STONE:
-					screen.blit(Art.tiles[2][0], x * tileSize - xScroll, y * tileSize - yScroll);
+					screen.blit(Art.buildingTiles[1][0], x * tileSize - xScroll, y * tileSize - yScroll);
 				default:
 					continue;
 				}
