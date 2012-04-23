@@ -35,12 +35,12 @@ public class Player extends Thing {
 			xSpeed = -walkSpeed;
 			walkTime++;
 			facingRight = false;
-			//theta = 180;
+			theta = 180;
 		} else if (input.keys[KeyEvent.VK_D]) {
 			xSpeed = walkSpeed;
 			walkTime++;
 			facingRight = true;
-			//theta = 0;
+			theta = 0;
 		} else {
 			xSpeed = 0;
 		}
