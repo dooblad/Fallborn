@@ -5,14 +5,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.peer.LightweightPeer;
 
 import javax.swing.JFrame;
 
 import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
-import com.game.fallborn.screen.ColorScreen;
+import com.game.fallborn.screen.LightScreen;
 import com.game.fallborn.screen.Screen;
 import com.game.fallborn.things.Player;
 
@@ -24,7 +23,8 @@ public class Game extends Canvas implements Runnable{
 	private static Game game;
 	private static JFrame frame;
 	private Screen screen;
-	private ColorScreen colorScreen;
+	private LightScreen lightScreen;
+	//private ColorScreen colorScreen;
 	private Thread thread;
 	private boolean running = false;
 	private int fpsDisplay = 0;
@@ -42,7 +42,8 @@ public class Game extends Canvas implements Runnable{
 	public Game() {
 		frame = new JFrame(GAME_NAME);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
-		colorScreen = new ColorScreen(GAME_WIDTH, GAME_HEIGHT, 0xFF00FF00);
+		lightScreen = new LightScreen(GAME_WIDTH, GAME_HEIGHT);
+		//colorScreen = new ColorScreen(GAME_WIDTH, GAME_HEIGHT, 0xFF00FF00);
 		level = new Level("res/level.png", 20);
 		player = new Player(Art.fallBornSheet, 30, 60);
 		input = new InputHandler(this);
@@ -109,13 +110,15 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen.render(level, player);
-		colorScreen.render();
+		lightScreen.render(player);
+		
+		//colorScreen.render();
 		
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
-		//perhaps later
-		g.drawImage(colorScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
+		g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
+		//g.drawImage(colorScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 80, 15);

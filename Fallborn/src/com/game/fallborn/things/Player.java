@@ -9,7 +9,8 @@ import com.game.fallborn.screen.Bitmap;
 import com.game.fallborn.screen.Screen;
 
 public class Player extends Thing {
-
+	public double theta = 0;
+	
 	public Player(Bitmap[][] bitmap, int positionX, int positionY) {
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -34,10 +35,12 @@ public class Player extends Thing {
 			xSpeed = -walkSpeed;
 			walkTime++;
 			facingRight = false;
+			//theta = 180;
 		} else if (input.keys[KeyEvent.VK_D]) {
 			xSpeed = walkSpeed;
 			walkTime++;
 			facingRight = true;
+			//theta = 0;
 		} else {
 			xSpeed = 0;
 		}
@@ -75,6 +78,9 @@ public class Player extends Thing {
 
 		// add walktime controller right here!
 		if(walkTime >= 10 * walkAnimationFactor) walkTime = 0;
+		
+		if(input.keys[KeyEvent.VK_UP]) theta+=0.1;
+		else if(input.keys[KeyEvent.VK_DOWN]) theta-=0.1;
 	}
 
 	public void render(Screen screen) {
