@@ -23,5 +23,6 @@ public class Screen extends Bitmap{
 		//blit(Art.tiles[0][0], 40, 40);
 		level.render(this);
 		player.render(this);
+		//blit(Art.fallBornBig, 200, 100);
 	}
 }

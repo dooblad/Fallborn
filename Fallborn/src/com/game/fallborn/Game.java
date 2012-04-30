@@ -34,10 +34,10 @@ public class Game extends Canvas implements Runnable{
 	public Level level;
 	public InputHandler input;
 	
-	public static final int GAME_WIDTH = 320;
+	public static final int GAME_WIDTH = 640;
 	//Maintains a nice aspect ratio
 	public static final int GAME_HEIGHT = GAME_WIDTH * 3 / 4;
-	public static final int GAME_SCALE = 2;
+	public static final int GAME_SCALE = 1;
 	
 	public Game() {
 		frame = new JFrame(GAME_NAME);
@@ -110,15 +110,13 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen.render(level, player);
-		lightScreen.render(player);
+		lightScreen.render(level, player);
 		
-		//colorScreen.render();
 		
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
-		//g.drawImage(colorScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 80, 15);

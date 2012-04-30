@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 public class Art {
 	public static final Bitmap fallBorn = loadImage("res/fallBorn.png");
+	public static final Bitmap fallBornBig = Scale2X.scaleUp(loadImage("res/fallBorn.png"));
 	public static final Bitmap[][] fallBornSheet = loadSpriteSheet("res/fallBornSheet.png", 15, 3);
 	public static final Bitmap[][] staticTiles = loadSpriteSheet("res/staticTiles.png", 5, 5);
 	public static final Bitmap[][] buildingTiles = loadSpriteSheet("res/buildingTiles.png", 5, 5);
@@ -28,6 +29,12 @@ public class Art {
 		return null;
 	}
 
+	private static Bitmap loadImageFromArray(int width, int height, int[] pixels) {
+		Bitmap result = new Bitmap(width, height);
+		result.clonePixels(pixels);
+		return result;
+	}
+
 	private static Bitmap[][] loadSpriteSheet(String URL, int tilesX, int tilesY) {
 		try {
 			BufferedImage image = ImageIO.read(new File(URL));
@@ -36,7 +43,7 @@ public class Art {
 			int tileWidth = width / tilesX;
 			int tileHeight = height / tilesY;
 			Bitmap[][] result = new Bitmap[tilesX][tilesY];
-		
+
 			for (int x = 0; x < tilesX; x++) {
 				for (int y = 0; y < tilesY; y++) {
 					result[x][y] = new Bitmap(tileWidth, tileHeight);

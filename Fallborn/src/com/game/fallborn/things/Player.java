@@ -10,6 +10,7 @@ import com.game.fallborn.screen.Screen;
 
 public class Player extends Thing {
 	public double theta = 0;
+	public double sprintFactor = 2.0;
 	
 	public Player(Bitmap[][] bitmap, int positionX, int positionY) {
 		this.positionX = positionX;
@@ -20,7 +21,8 @@ public class Player extends Thing {
 	}
 
 	public void tick(InputHandler input, Level level, Screen screen) {
-
+		
+		//Y movement
 		if (input.keys[KeyEvent.VK_W]) {
 			ySpeed = -walkSpeed;
 			walkTime++;
@@ -30,31 +32,46 @@ public class Player extends Thing {
 		} else {
 			ySpeed = 0;
 		}
-
+		//X movement
 		if (input.keys[KeyEvent.VK_A]) {
 			xSpeed = -walkSpeed;
 			walkTime++;
 			facingRight = false;
-			theta = 180;
 		} else if (input.keys[KeyEvent.VK_D]) {
 			xSpeed = walkSpeed;
 			walkTime++;
 			facingRight = true;
-			theta = 0;
 		} else {
 			xSpeed = 0;
 		}
+		
+		
+		//set theta for primary directions(lighting)
+		if(input.keys[KeyEvent.VK_W]) theta = 270;
+		else if(input.keys[KeyEvent.VK_S]) theta = 90;
+		if(input.keys[KeyEvent.VK_A]) theta = 180;
+		else if(input.keys[KeyEvent.VK_D]) theta = 0;
+		
+		//set theta for intermediate directions
+		if(input.keys[KeyEvent.VK_D] && input.keys[KeyEvent.VK_W]) theta = 315;
+		else if(input.keys[KeyEvent.VK_W] && input.keys[KeyEvent.VK_A]) theta = 215;
+		else if(input.keys[KeyEvent.VK_A] && input.keys[KeyEvent.VK_S]) theta = 135;
+		else if(input.keys[KeyEvent.VK_S] && input.keys[KeyEvent.VK_D]) theta = 45;
 
+			
+		// set animation to resting
 		if (xSpeed == 0 && ySpeed == 0) {
 			walkTime = 0;
 		}
 
+		// sprinting
 		if (input.keys[KeyEvent.VK_SHIFT]) {
 			xSpeed *= sprintFactor;
 			ySpeed *= sprintFactor;
 			walkTime++;
 		}
 
+		// collision detection
 		level.collided(this);
 
 		if (collisions[Thing.TOP] && ySpeed < 0) {
@@ -70,9 +87,13 @@ public class Player extends Thing {
 			xSpeed = 0;
 		}
 
+		// add calculated speed values
 		positionX += xSpeed;
 		positionY += ySpeed;
+		
+		System.out.println("X: " + positionX + " Y: " + positionY);
 
+		// scrolling the world
 		level.xScroll = (int) positionX - (screen.width - width) / 2;
 		level.yScroll = (int) positionY - (screen.height - height) / 2;
 
