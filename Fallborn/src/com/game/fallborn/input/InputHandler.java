@@ -10,9 +10,13 @@ import com.game.fallborn.Game;
 
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener{
 	public boolean[] keys = new boolean[128];
+	public int mouseX = 0;
+	public int mouseY = 0;
 	
 	public InputHandler(Game game) {
 		game.addKeyListener(this);
+		game.addMouseListener(this);
+		game.addMouseMotionListener(this);
 	}
 	
 	//KEY EVENTS
@@ -29,12 +33,13 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 	}
 	
 	//MOUSE MOTION
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(MouseEvent e) {
 		
 	}
 
-	public void mouseMoved(MouseEvent arg0) {
-		
+	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 	
 	//MOUSE EVENTS

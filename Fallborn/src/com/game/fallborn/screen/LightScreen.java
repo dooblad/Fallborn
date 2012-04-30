@@ -8,8 +8,8 @@ import com.game.fallborn.things.Player;
 
 public class LightScreen extends Bitmap {
 	public BufferedImage image;
-	private double radius = 200;
-	private double angleSpread = 60;
+	private double radius = 150;
+	private double angleSpread = 120;
 	private double lowAngle, highAngle;
 
 	public LightScreen(int width, int height) {
@@ -19,10 +19,10 @@ public class LightScreen extends Bitmap {
 	}
 
 	public void render(Level level, Player player) {
-		fill(0xFA000000);
+		fill(0xD0000000);
 		lowAngle = player.theta - (angleSpread / 2);
 		highAngle = player.theta + (angleSpread / 2);
-		int alphaIncrement = (int) (0xFF / radius);
+		float alphaIncrement = (float) (0x90 / radius);
 
 		for (double t = lowAngle; t <= highAngle; t += 0.15) { // decrease increment for finer shadows
 			for (int r = 0; r < radius; r++) {
@@ -33,10 +33,16 @@ public class LightScreen extends Bitmap {
 				int yy = y + (height / 2 - (player.getHeight() / 2));
 				if (xx < 0 || xx >= width || yy < 0 || yy >= height)
 					continue;
-				//System.out.println("X: " + x + " Y: " + y);
-				if(level.tiles[level.getTileX(player.getPositionX() + xx)][level.getTileY(player.getPositionY() + yy)] != TileID.GRASS) continue;
+				double shadowPositionX = player.getPositionX() + xx - (width - player.width) / 2;
+				double shadowPositionY = player.getPositionY() + yy - (height - player.height) / 2;
 				
-				pixels[xx + yy * width] = 0x00000000 + ((alphaIncrement * ((int) (r + (radius / 3.7 - 0xF)))) << 24);
+				if(shadowPositionX < 0 || shadowPositionX >= level.width * level.tileSize ||
+				   shadowPositionY < 0 || shadowPositionY >= level.height * level.tileSize) continue;
+				
+				if(level.tiles[level.getTileX(shadowPositionX)]
+				  [level.getTileY(shadowPositionY)] != TileID.GRASS) break;
+				
+				pixels[xx + yy * width] = ((int)(alphaIncrement * (r + radius / 3.7)) << 24);
 			}
 		}
 	}

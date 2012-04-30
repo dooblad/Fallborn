@@ -45,19 +45,14 @@ public class Player extends Thing {
 			xSpeed = 0;
 		}
 		
-		
-		//set theta for primary directions(lighting)
-		if(input.keys[KeyEvent.VK_W]) theta = 270;
-		else if(input.keys[KeyEvent.VK_S]) theta = 90;
-		if(input.keys[KeyEvent.VK_A]) theta = 180;
-		else if(input.keys[KeyEvent.VK_D]) theta = 0;
-		
-		//set theta for intermediate directions
-		if(input.keys[KeyEvent.VK_D] && input.keys[KeyEvent.VK_W]) theta = 315;
-		else if(input.keys[KeyEvent.VK_W] && input.keys[KeyEvent.VK_A]) theta = 215;
-		else if(input.keys[KeyEvent.VK_A] && input.keys[KeyEvent.VK_S]) theta = 135;
-		else if(input.keys[KeyEvent.VK_S] && input.keys[KeyEvent.VK_D]) theta = 45;
-
+		float opposite = (input.mouseY - screen.height / 2);
+		float adjacent = input.mouseX - screen.width / 2;
+		double inverseTan = Math.toDegrees(Math.atan(opposite / adjacent));
+		if(adjacent >= 0)
+			theta = inverseTan;
+		else {
+			theta = inverseTan - 180;
+		}
 			
 		// set animation to resting
 		if (xSpeed == 0 && ySpeed == 0) {
@@ -91,8 +86,6 @@ public class Player extends Thing {
 		positionX += xSpeed;
 		positionY += ySpeed;
 		
-		System.out.println("X: " + positionX + " Y: " + positionY);
-
 		// scrolling the world
 		level.xScroll = (int) positionX - (screen.width - width) / 2;
 		level.yScroll = (int) positionY - (screen.height - height) / 2;
@@ -100,8 +93,8 @@ public class Player extends Thing {
 		// add walktime controller right here!
 		if(walkTime >= 10 * walkAnimationFactor) walkTime = 0;
 		
-		if(input.keys[KeyEvent.VK_UP]) theta+=0.1;
-		else if(input.keys[KeyEvent.VK_DOWN]) theta-=0.1;
+		if(input.keys[KeyEvent.VK_UP]) theta += 1;
+		else if(input.keys[KeyEvent.VK_DOWN]) theta -= 1;
 	}
 
 	public void render(Screen screen) {
