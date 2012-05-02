@@ -17,14 +17,13 @@ import com.game.fallborn.things.Player;
 
 public class Game extends Canvas implements Runnable{
 	
-	//We kindly thank Mojang(or maybe it's Notch) for creating
-	//this wonderful Java template for creating a game
+	// We kindly thank Mojang(or maybe it's Notch) for creating
+	// this wonderful Java template for creating a game
 	
 	private static Game game;
 	private static JFrame frame;
 	private Screen screen;
 	private LightScreen lightScreen;
-	//private ColorScreen colorScreen;
 	private Thread thread;
 	private boolean running = false;
 	private int fpsDisplay = 0;
@@ -43,7 +42,6 @@ public class Game extends Canvas implements Runnable{
 		frame = new JFrame(GAME_NAME);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
 		lightScreen = new LightScreen(GAME_WIDTH, GAME_HEIGHT);
-		//colorScreen = new ColorScreen(GAME_WIDTH, GAME_HEIGHT, 0xFF00FF00);
 		level = new Level("res/level.png", 20);
 		player = new Player(Art.fallBornSheet, 30, 60);
 		input = new InputHandler(this);
@@ -110,13 +108,19 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen.render(level, player);
-		lightScreen.render(level, player);
+		
+		if(player.getLightIsOn()) {
+			lightScreen.render(level, player);
+		}
 		
 		
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
-		g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
+		
+		if(player.getLightIsOn()) {
+			g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
+		}
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 80, 15);

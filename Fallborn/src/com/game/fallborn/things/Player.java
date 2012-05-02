@@ -11,6 +11,8 @@ import com.game.fallborn.screen.Screen;
 public class Player extends Thing {
 	public double theta = 0;
 	public double sprintFactor = 2.0;
+	public boolean lightIsOn = false;
+	private boolean lightToggled = false;
 	
 	public Player(Bitmap[][] bitmap, int positionX, int positionY) {
 		this.positionX = positionX;
@@ -22,7 +24,7 @@ public class Player extends Thing {
 
 	public void tick(InputHandler input, Level level, Screen screen) {
 		
-		//Y movement
+		// Y Movement
 		if (input.keys[KeyEvent.VK_W]) {
 			ySpeed = -walkSpeed;
 			walkTime++;
@@ -32,7 +34,7 @@ public class Player extends Thing {
 		} else {
 			ySpeed = 0;
 		}
-		//X movement
+		// X Movement
 		if (input.keys[KeyEvent.VK_A]) {
 			xSpeed = -walkSpeed;
 			walkTime++;
@@ -45,7 +47,16 @@ public class Player extends Thing {
 			xSpeed = 0;
 		}
 		
-		float opposite = (input.mouseY - screen.height / 2);
+		// Light Toggler
+		if(input.keys[KeyEvent.VK_F] && !lightToggled) {
+			lightIsOn = !lightIsOn;
+			lightToggled = true;
+		} else if(!input.keys[KeyEvent.VK_F]) {
+			lightToggled = false;
+		}
+		
+		// Mouse Computing
+		float opposite = input.mouseY - screen.height / 2;
 		float adjacent = input.mouseX - screen.width / 2;
 		double inverseTan = Math.toDegrees(Math.atan(opposite / adjacent));
 		if(adjacent >= 0)
@@ -54,19 +65,19 @@ public class Player extends Thing {
 			theta = inverseTan - 180;
 		}
 			
-		// set animation to resting
+		// Set Animation to Resting
 		if (xSpeed == 0 && ySpeed == 0) {
 			walkTime = 0;
 		}
 
-		// sprinting
+		// Sprinting
 		if (input.keys[KeyEvent.VK_SHIFT]) {
 			xSpeed *= sprintFactor;
 			ySpeed *= sprintFactor;
 			walkTime++;
 		}
 
-		// collision detection
+		// Collision Detection
 		level.collided(this);
 
 		if (collisions[Thing.TOP] && ySpeed < 0) {
@@ -82,19 +93,16 @@ public class Player extends Thing {
 			xSpeed = 0;
 		}
 
-		// add calculated speed values
+		// Add Calculated Speed Values
 		positionX += xSpeed;
 		positionY += ySpeed;
 		
-		// scrolling the world
+		// Scrolling the World
 		level.xScroll = (int) positionX - (screen.width - width) / 2;
 		level.yScroll = (int) positionY - (screen.height - height) / 2;
 
-		// add walktime controller right here!
+		// Walktime Resetter
 		if(walkTime >= 10 * walkAnimationFactor) walkTime = 0;
-		
-		if(input.keys[KeyEvent.VK_UP]) theta += 1;
-		else if(input.keys[KeyEvent.VK_DOWN]) theta -= 1;
 	}
 
 	public void render(Screen screen) {
@@ -104,8 +112,8 @@ public class Player extends Thing {
 			screen.blitReverse(bitmap[walkTime / walkAnimationFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
 		}
 	}
-
-	public void addGravity() {
-
+	
+	public boolean getLightIsOn() {
+		return lightIsOn;
 	}
 }
