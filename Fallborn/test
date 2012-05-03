@@ -1,1 +1,6 @@
-Hello?
+for(int i = 1; i < t.getWidth() - 1; i++) {
+	if (tiles[getTileX(t.getPositionX() + t.getXSpeed() + i)]
+	         [getTileY(t.getPositionY() + ySpeedTemp + (t.getHeight() / 1.25))] != TileID.GRASS) {
+		t.setCollisions(Thing.TOP, true);
+	}
+}
