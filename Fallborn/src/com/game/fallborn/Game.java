@@ -27,11 +27,13 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running = false;
 	private int fpsDisplay = 0;
+	private boolean fpsLimited = true;
 	
 	public static final String GAME_NAME = "Fallborn";
 	public Player player;
 	public Level level;
 	public InputHandler input;
+	public Time time;
 	
 	public static final int GAME_WIDTH = 640;
 	//Maintains a nice aspect ratio
@@ -45,6 +47,7 @@ public class Game extends Canvas implements Runnable{
 		level = new Level("res/level.png", 20);
 		player = new Player(Art.fallBornSheet, 30, 60);
 		input = new InputHandler(this);
+		time = new Time();
 	}
 	
 	public void start() {
@@ -60,7 +63,7 @@ public class Game extends Canvas implements Runnable{
 		double unprocessedSeconds = 0;
 		boolean ticked = false;
 		int fps = 0;
-		int tickCount = 0;
+		short tickCount = 0;
 		requestFocus();
 		
 		while(running) {
@@ -75,12 +78,13 @@ public class Game extends Canvas implements Runnable{
 				if(tickCount % 60 == 0) {
 					fpsDisplay = fps;
 					fps = 0;
+					//System.out.println(time.getTime());
 				}
 			}
 			
 			if(ticked) {
 				render();
-				//ticked = false; uncomment to limit
+				if(fpsLimited) ticked = false;
 				fps++;
 			}
 		}
@@ -98,6 +102,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public void tick() {
 		player.tick(input, level, screen);
+		time.tick();
 	}
 	
 	public void render() {
@@ -109,8 +114,8 @@ public class Game extends Canvas implements Runnable{
 		
 		screen.render(level, player);
 		
-		if(player.getLightIsOn()) {
-			lightScreen.render(level, player);
+		if(time.isNightTime()) {
+			lightScreen.render(level, player, time);
 		}
 		
 		
@@ -118,7 +123,7 @@ public class Game extends Canvas implements Runnable{
 		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		
-		if(player.getLightIsOn()) {
+		if(time.isNightTime()) {
 			g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		}
 		

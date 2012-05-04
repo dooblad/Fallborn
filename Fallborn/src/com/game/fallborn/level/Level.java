@@ -92,37 +92,34 @@ public class Level {
 			for (int i = 0; i < t.getCollisions().length; i++) {
 				t.setCollisions(i, false);
 			}
-			
-			for (int i = 1; i < t.getWidth() - 1; i++) {
-				if (tiles[getTileX(t.getPositionX() + t.getXSpeed() + i)]
-					[getTileY(t.getPositionY() + t.getYSpeed() + (t.getHeight() / 1.25))] != TileID.GRASS) {
-						t.setCollisions(Thing.TOP, true);
-						t.setYSpeed(t.getYSpeed() + 1);
+
+			for (int i = 1; i < t.getWidth() - 1; i++) { // TOP
+				if (tiles[getTileX(t.getPositionX() + t.getXSpeed() + i)][getTileY(t.getPositionY() + t.getYSpeed() + (t.getHeight() / 1.25))] != TileID.GRASS) {
+					t.setCollisions(Thing.TOP, true);
+					t.setYSpeed(t.getYSpeed() + 1);
 				}
 			}
-			for (int i = 1; i < t.getWidth() - 1; i++) {
-				if (tiles[getTileX(t.getPositionX() + t.getXSpeed() + i)]
-					[getTileY(t.getPositionY() + t.getYSpeed() + (t.getHeight() / 1.15))] != TileID.GRASS) {
-						t.setCollisions(Thing.BOTTOM, true);
-						t.setYSpeed(t.getYSpeed() - 1);
+
+			for (int i = 1; i < t.getWidth() - 1; i++) { // BOTTOM
+				if (tiles[getTileX(t.getPositionX() + t.getXSpeed() + i)][getTileY(t.getPositionY() + t.getYSpeed() + (t.getHeight() / 1.15))] != TileID.GRASS) {
+					t.setCollisions(Thing.BOTTOM, true);
+					t.setYSpeed(t.getYSpeed() - 1);
 				}
 			}
-			for (int i = (int) ((t.getHeight() / 1.25) + 1); i < (t.getHeight() / 1.15) - 1; i++) {
-				if (tiles[getTileX(t.getPositionX() + t.getXSpeed())]
-					[getTileY(t.getPositionY() + t.getYSpeed() + i)] != TileID.GRASS) {
-						t.setCollisions(Thing.LEFT, true);
-						t.setXSpeed(t.getXSpeed() + 1);
+
+			for (int i = (int) ((t.getHeight() / 1.25) + 1); i < (t.getHeight() / 1.15) - 1; i++) { // LEFT
+				if (tiles[getTileX(t.getPositionX() + t.getXSpeed())][getTileY(t.getPositionY() + t.getYSpeed() + i)] != TileID.GRASS) {
+					t.setCollisions(Thing.LEFT, true);
+					t.setXSpeed(t.getXSpeed() + 1);
 				}
 			}
-			for (int i = (int) ((t.getHeight() / 1.25) + 1); i < (t.getHeight() / 1.15) - 1; i++) {
-				if (tiles[getTileX(t.getPositionX() + t.getWidth() + t.getXSpeed())]
-					[getTileY(t.getPositionY() + t.getYSpeed() + i)] != TileID.GRASS) {
-						t.setCollisions(Thing.RIGHT, true);
-						t.setXSpeed(t.getXSpeed() - 1);
+
+			for (int i = (int) ((t.getHeight() / 1.25) + 1); i < (t.getHeight() / 1.15) - 1; i++) { // RIGHT
+				if (tiles[getTileX(t.getPositionX() + t.getWidth() + t.getXSpeed())][getTileY(t.getPositionY() + t.getYSpeed() + i)] != TileID.GRASS) {
+					t.setCollisions(Thing.RIGHT, true);
+					t.setXSpeed(t.getXSpeed() - 1);
 				}
 			}
-		}
-		while (t.getCollisions()[Thing.TOP] || t.getCollisions()[Thing.BOTTOM] ||
-			   t.getCollisions()[Thing.LEFT] || t.getCollisions()[Thing.RIGHT]);
+		} while (t.getCollisions()[Thing.TOP] || t.getCollisions()[Thing.BOTTOM] || t.getCollisions()[Thing.LEFT] || t.getCollisions()[Thing.RIGHT]);
 	}
 }
