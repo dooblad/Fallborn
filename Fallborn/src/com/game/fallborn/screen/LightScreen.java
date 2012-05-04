@@ -14,12 +14,12 @@ public class LightScreen extends Bitmap {
 	private double lowAngle, highAngle;
 
 	private double nightAlphaIncrement;
-	private int nightAlpha = 0xE9;
+	private int maxNightAlpha = 0xE9;
 	private int nightColor = 0x00000B;
 	private int currentNightAlpha = 0;
 	
 	//private int lightColor = 0x100606;
-	private float lightAlphaIncrement = (float) (0x91 / (radius));
+	//private float lightAlphaIncrement = (float) (0x91 / (radius));
 
 	public LightScreen(int width, int height) {
 		super(width, height);
@@ -30,10 +30,10 @@ public class LightScreen extends Bitmap {
 	public void render(Level level, Player player, Time time) {
 		// MAKE NIGHT/DAY TRANSITION DEPENDENT ON GAME TIME ONLY!!!
 		
-		nightAlphaIncrement = nightAlpha / (double)(time.getTransitionLength());
-		currentNightAlpha = nightAlpha;//((int)((nightAlphaIncrement * (time.getNightLength() - (time.getDayLength() - time.getTime()))) / 2) << 24);
-		if(currentNightAlpha > nightAlpha) currentNightAlpha = nightAlpha;
-		
+		nightAlphaIncrement = ((double) (currentNightAlpha)) / radius;
+		currentNightAlpha = (int)(((time.getNightLength() - (time.getDayLength() - time.getTime()))) / 23);
+		System.out.println("current: " + currentNightAlpha + " total: " + maxNightAlpha);
+		if(currentNightAlpha > maxNightAlpha) currentNightAlpha = maxNightAlpha;
 		fill((currentNightAlpha << 24) + nightColor);
 		
 		if (player.getLightIsOn()) {
@@ -58,8 +58,8 @@ public class LightScreen extends Bitmap {
 
 					if (level.tiles[level.getTileX(shadowPositionX)][level.getTileY(shadowPositionY)] != TileID.GRASS)
 						break;
-
-					int pixel = (int) (((int) (nightAlphaIncrement * (r + radius / 1.63)) << 24));
+					//int pixel = (int) (((int) (lightAlphaIncrement * (r + radius / 1.63)) << 24));
+					int pixel = ((int) (nightAlphaIncrement * r) << 24) + nightColor;
 					pixels[xx + yy * width] = pixel;
 				}
 			}
