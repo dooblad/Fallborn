@@ -16,6 +16,7 @@ public class Thing {
 	public static final int RIGHT = 3;
 	public int width, height;
 	public Bitmap[][] bitmap;
+	public Direction direction;
 	
 	public int getWidth() {
 		return width;

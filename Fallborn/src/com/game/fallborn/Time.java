@@ -1,10 +1,10 @@
 package com.game.fallborn;
 
 public class Time {
-	private long time = 6500;
 	private long dayLength = 10000;
-	private long nightLength = (long)(dayLength * 2.0 / 3.0);
-	private long transitionLength = (long) (nightLength * 1.0 / 10.0);
+	private long nightLength = (long)(dayLength * 1.0 / 3.0);
+	private long time = dayLength - nightLength;
+	private double dayToNightRatio = ((double) dayLength) / nightLength;
 	
 	public void tick() {
 		if(time > dayLength) time = 0;
@@ -32,15 +32,15 @@ public class Time {
 		this.nightLength = nightLength;
 	}
 	
-	public long getTransitionLength() {
-		return transitionLength;
+	public double getDayToNightRatio() {
+		return dayToNightRatio;
 	}
-	public void setTransitionLength(long transitionLength) {
-		this.transitionLength = transitionLength;
+	public void setDayToNightRatio(double dayToNightRatio) {
+		this.dayToNightRatio = dayToNightRatio;
 	}
 	
 	public boolean isNightTime() {
-		if(time >= nightLength)
+		if(time >= dayLength - nightLength)
 			return true;
 		else
 			return false;

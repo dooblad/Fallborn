@@ -20,6 +20,11 @@ public class Art {
 			int width = image.getWidth();
 			int height = image.getHeight();
 			Bitmap result = new Bitmap(width, height);
+			for(int x = 0; x < width; x++) {
+				for(int y = 0; y < height; y++) {
+					result.pixels[x + y * width] = image.getRGB(x, y);
+				}
+			}
 			image.getRGB(0, 0, width, height, result.pixels, 0, width);
 			return result;
 		} catch (IOException e) {
@@ -27,12 +32,6 @@ public class Art {
 		}
 
 		return null;
-	}
-
-	private static Bitmap loadImageFromArray(int width, int height, int[] pixels) {
-		Bitmap result = new Bitmap(width, height);
-		result.clonePixels(pixels);
-		return result;
 	}
 
 	private static Bitmap[][] loadSpriteSheet(String URL, int tilesX, int tilesY) {
