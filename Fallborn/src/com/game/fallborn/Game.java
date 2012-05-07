@@ -13,6 +13,7 @@ import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.LightScreen;
 import com.game.fallborn.screen.Screen;
+import com.game.fallborn.sound.Sound;
 import com.game.fallborn.things.alive.Player;
 
 public class Game extends Canvas implements Runnable{
@@ -42,12 +43,22 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game() {
 		frame = new JFrame(GAME_NAME);
+		frame.setSize(GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE);
+		frame.setAlwaysOnTop(true);
+		frame.setFocusable(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
+		frame.add(this);
+		frame.setVisible(true);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
 		lightScreen = new LightScreen(GAME_WIDTH, GAME_HEIGHT);
+		Sound.initializeSound();
 		level = new Level("res/level.png", 20);
 		player = new Player(Art.fallBornSheet, 30, 60);
 		input = new InputHandler(this);
 		time = new Time();
+		this.start();
 	}
 	
 	public void start() {
@@ -138,18 +149,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public static void main(String[] args) {
-		game = new Game();
-		
-		frame.setSize(GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE);
-		frame.setAlwaysOnTop(true);
-		frame.setFocusable(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.add(game);
-		frame.setVisible(true);
-		
+		new Game();
 		System.out.println("Pseudo-lucidity at its finest");
-		game.start();
 	}
 }

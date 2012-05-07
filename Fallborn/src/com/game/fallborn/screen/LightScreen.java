@@ -36,7 +36,7 @@ public class LightScreen extends Bitmap {
 		nightAlphaIncrement = ((double) (currentNightAlpha)) / radius;
 		long timeUntilDay = time.getDayLength() - time.getTime();
 		currentNightAlpha = (int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * (double) maxNightAlpha);
-		System.out.println((int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * (double) maxNightAlpha));
+		//System.out.println((int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * (double) maxNightAlpha));
 		
 		if(currentNightAlpha > maxNightAlpha) currentNightAlpha = maxNightAlpha;
 		fill((currentNightAlpha << 24) + nightColor);

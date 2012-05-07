@@ -1,5 +1,6 @@
 package com.game.fallborn.input;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,11 +13,12 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 	public boolean[] keys = new boolean[128];
 	public int mouseX = 0;
 	public int mouseY = 0;
+	public boolean mousePressed = false;
 	
-	public InputHandler(Game game) {
-		game.addKeyListener(this);
-		game.addMouseListener(this);
-		game.addMouseMotionListener(this);
+	public InputHandler(Component c) {
+		c.addKeyListener(this);
+		c.addMouseListener(this);
+		c.addMouseMotionListener(this);
 	}
 	
 	//KEY EVENTS
@@ -56,11 +58,11 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 	}
 
 	public void mousePressed(MouseEvent e) {
-		
+		mousePressed = true;
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		
+		mousePressed = false;
 	}
 
 
