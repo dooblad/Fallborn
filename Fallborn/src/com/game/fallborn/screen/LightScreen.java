@@ -61,7 +61,7 @@ public class LightScreen extends Bitmap {
 					if (shadowPositionX < 0 || shadowPositionX >= level.getWidth() * level.getTileSize() || shadowPositionY < 0 || shadowPositionY >= level.getHeight() * level.getTileSize())
 						continue;
 
-					if (level.tiles[level.getTileX(shadowPositionX + (x < 0 ? level.getTileSize() : -level.getTileSize()))][level.getTileY(shadowPositionY + (y < 0 ? level.getTileSize() : -level.getTileSize()))] != TileID.GRASS)
+					if (level.tiles[level.getTileX(shadowPositionX /*+ (x < 0 ? level.getTileSize() : -level.getTileSize())*/)][level.getTileY(shadowPositionY /*+ (y < 0 ? level.getTileSize() : -level.getTileSize())*/)] != TileID.GRASS)
 						break;
 
 					int pixel = ((int) (nightAlphaIncrement * r) << 24) + nightColor;

@@ -151,7 +151,7 @@ public class Launcher extends Canvas {
 						}
 					}
 					if (input.mousePressed)
-						playGame();
+						closeLauncher();
 				} else {
 					for (int x = 0; x < quitButtonText.getWidth(); x++) {
 						for (int y = 0; y < quitButtonText.getHeight(); y++) {
