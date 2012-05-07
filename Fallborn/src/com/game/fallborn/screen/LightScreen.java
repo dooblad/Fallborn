@@ -58,10 +58,10 @@ public class LightScreen extends Bitmap {
 					double shadowPositionX = player.getPositionX() + xx - (width - player.width) / 2;
 					double shadowPositionY = player.getPositionY() + yy - (height - player.height) / 2;
 
-					if (shadowPositionX < 0 || shadowPositionX >= level.width * level.tileSize || shadowPositionY < 0 || shadowPositionY >= level.height * level.tileSize)
+					if (shadowPositionX < 0 || shadowPositionX >= level.getWidth() * level.getTileSize() || shadowPositionY < 0 || shadowPositionY >= level.getHeight() * level.getTileSize())
 						continue;
 
-					if (level.tiles[level.getTileX(shadowPositionX)][level.getTileY(shadowPositionY)] != TileID.GRASS)
+					if (level.tiles[level.getTileX(shadowPositionX + (x < 0 ? level.getTileSize() : -level.getTileSize()))][level.getTileY(shadowPositionY + (y < 0 ? level.getTileSize() : -level.getTileSize()))] != TileID.GRASS)
 						break;
 
 					int pixel = ((int) (nightAlphaIncrement * r) << 24) + nightColor;

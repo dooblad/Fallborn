@@ -53,7 +53,7 @@ public class Game extends Canvas implements Runnable{
 		frame.setVisible(true);
 		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
 		lightScreen = new LightScreen(GAME_WIDTH, GAME_HEIGHT);
-		Sound.initializeSound();
+		//Sound.initializeSound();
 		level = new Level("res/level.png", 20);
 		player = new Player(Art.fallBornSheet, 30, 60);
 		input = new InputHandler(this);
