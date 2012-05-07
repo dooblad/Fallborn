@@ -13,7 +13,6 @@ import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.LightScreen;
 import com.game.fallborn.screen.Screen;
-import com.game.fallborn.sound.Sound;
 import com.game.fallborn.things.alive.Player;
 
 public class Game extends Canvas implements Runnable{
@@ -68,6 +67,7 @@ public class Game extends Canvas implements Runnable{
 		thread.start();
 		}
 	}
+	@Override
 	public void run() {
 		long previousTime = System.nanoTime();
 		double secondsPerTick = 1 / 60.0;

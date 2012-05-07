@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.level.Level;
-import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.Bitmap;
 import com.game.fallborn.screen.Screen;
 import com.game.fallborn.things.Thing;

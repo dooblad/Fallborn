@@ -1,8 +1,6 @@
 package com.game.fallborn.menu;
 
 import static org.lwjgl.openal.AL10.*;
-import org.lwjgl.openal.*;
-
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -25,21 +23,19 @@ import com.game.fallborn.input.InputHandler;
 public class Launcher extends Canvas {
 	private JFrame frame;
 	private InputHandler input;
-	private int WIDTH = 640;
-	private int HEIGHT = 480;
 	private boolean running = false;
 	private boolean inputAllowed = true;
 
 	private BufferedImage menuBackground;
-	
+
 	private int textColorDefault = 0xFFFFFF;
-	
+
 	private BufferedImage playButtonText;
 	private int playButtonX = 355, playButtonY = 187;
-	
+
 	private BufferedImage quitButtonText;
 	private int quitButtonX = 355, quitButtonY = 281;
-	
+
 	private IntBuffer menuMusicBuffer;
 	private IntBuffer menuMusicSource;
 	private boolean musicPlaying = false;
@@ -51,14 +47,14 @@ public class Launcher extends Canvas {
 		input = new InputHandler(this);
 		frame.setSize(menuBackground.getWidth(), menuBackground.getHeight());
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.add(this);
 		running = true;
-		
+
 		playMusic();
-		
+
 		long previousTime = System.nanoTime();
 		double secondsPerTick = 1 / 60.0;
 		double unprocessedSeconds = 0;
@@ -98,6 +94,7 @@ public class Launcher extends Canvas {
 			System.exit(1);
 		}
 	}
+
 	private void loadMusic() {
 		try {
 			AL.create();
@@ -108,15 +105,15 @@ public class Launcher extends Canvas {
 			System.exit(1);
 		}
 		WaveData data = WaveData.create("menu.wav");
-        menuMusicBuffer = BufferUtils.createIntBuffer(1);
-        alGenBuffers(menuMusicBuffer);
-        alBufferData(menuMusicBuffer.get(0), data.format, data.data, data.samplerate);
-        data.dispose();
-        menuMusicSource = BufferUtils.createIntBuffer(1); 
-        alGenSources(menuMusicSource);
-        alSourcei(menuMusicSource.get(0), AL_BUFFER, menuMusicBuffer.get(0));
+		menuMusicBuffer = BufferUtils.createIntBuffer(1);
+		alGenBuffers(menuMusicBuffer);
+		alBufferData(menuMusicBuffer.get(0), data.format, data.data, data.samplerate);
+		data.dispose();
+		menuMusicSource = BufferUtils.createIntBuffer(1);
+		alGenSources(menuMusicSource);
+		alSourcei(menuMusicSource.get(0), AL_BUFFER, menuMusicBuffer.get(0));
 	}
-	
+
 	private void playMusic() {
 		alSourcePlay(menuMusicSource);
 		musicPlaying = true;
@@ -124,7 +121,7 @@ public class Launcher extends Canvas {
 
 	private void tick() {
 		if (inputAllowed) {
-			if (input.mouseX > playButtonX && input.mouseX < playButtonX + playButtonText.getWidth() && 
+			if (input.mouseX > playButtonX && input.mouseX < playButtonX + playButtonText.getWidth() &&
 				input.mouseY > playButtonY && input.mouseY < playButtonY + playButtonText.getHeight()) {
 				for (int x = 0; x < playButtonText.getWidth(); x++) {
 					for (int y = 0; y < playButtonText.getHeight(); y++) {
@@ -142,25 +139,29 @@ public class Launcher extends Canvas {
 					}
 				}
 			}
-			if (input.mouseX > quitButtonX && input.mouseX < quitButtonX + quitButtonText.getWidth() && 
-					input.mouseY > quitButtonY && input.mouseY < quitButtonY + quitButtonText.getHeight()) {
-					for (int x = 0; x < quitButtonText.getWidth(); x++) {
-						for (int y = 0; y < quitButtonText.getHeight(); y++) {
-							int alpha = quitButtonText.getRGB(x, y) >> 24;
-							quitButtonText.setRGB(x, y, (alpha << 24) + (textColorDefault - 0xFF));
-						}
-					}
-					if (input.mousePressed)
-						closeLauncher();
-				} else {
-					for (int x = 0; x < quitButtonText.getWidth(); x++) {
-						for (int y = 0; y < quitButtonText.getHeight(); y++) {
-							int alpha = quitButtonText.getRGB(x, y) >> 24;
-							quitButtonText.setRGB(x, y, (alpha << 24) + textColorDefault);
-						}
+			if (input.mouseX > quitButtonX && input.mouseX < quitButtonX + quitButtonText.getWidth() &&
+				input.mouseY > quitButtonY && input.mouseY < quitButtonY + quitButtonText.getHeight()) {
+				for (int x = 0; x < quitButtonText.getWidth(); x++) {
+					for (int y = 0; y < quitButtonText.getHeight(); y++) {
+						int alpha = quitButtonText.getRGB(x, y) >> 24;
+						quitButtonText.setRGB(x, y, (alpha << 24) + (textColorDefault - 0xFF));
 					}
 				}
+				if (input.mousePressed)
+					closeLauncher();
+			} else {
+				for (int x = 0; x < quitButtonText.getWidth(); x++) {
+					for (int y = 0; y < quitButtonText.getHeight(); y++) {
+						int alpha = quitButtonText.getRGB(x, y) >> 24;
+						quitButtonText.setRGB(x, y, (alpha << 24) + textColorDefault);
+					}
+				}
+			}
+			if(input.mousePressed) {
+				
+			}
 		}
+		
 	}
 
 	private void render() {
@@ -180,7 +181,8 @@ public class Launcher extends Canvas {
 	}
 
 	private void playGame() {
-		if(musicPlaying) alSourceStop(menuMusicSource);
+		if (musicPlaying)
+			alSourceStop(menuMusicSource);
 		alDeleteBuffers(menuMusicBuffer);
 		alDeleteSources(menuMusicSource);
 		AL.destroy();
@@ -188,9 +190,10 @@ public class Launcher extends Canvas {
 		frame.dispose();
 		new Game();
 	}
-	
+
 	private void closeLauncher() {
-		if(musicPlaying) alSourceStop(menuMusicSource);
+		if (musicPlaying)
+			alSourceStop(menuMusicSource);
 		alDeleteBuffers(menuMusicBuffer);
 		alDeleteSources(menuMusicSource);
 		AL.destroy();

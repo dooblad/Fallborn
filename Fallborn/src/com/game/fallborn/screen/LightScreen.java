@@ -33,9 +33,9 @@ public class LightScreen extends Bitmap {
 	}
 
 	public void render(Level level, Player player, Time time) {
-		nightAlphaIncrement = ((double) (currentNightAlpha)) / radius;
+		nightAlphaIncrement = (currentNightAlpha) / radius;
 		long timeUntilDay = time.getDayLength() - time.getTime();
-		currentNightAlpha = (int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * (double) maxNightAlpha);
+		currentNightAlpha = (int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * maxNightAlpha);
 		//System.out.println((int) (Math.sin((time.getNightLength() - timeUntilDay) / (time.getNightLength() / time.getDayToNightRatio())) * (double) maxNightAlpha));
 		
 		if(currentNightAlpha > maxNightAlpha) currentNightAlpha = maxNightAlpha;
