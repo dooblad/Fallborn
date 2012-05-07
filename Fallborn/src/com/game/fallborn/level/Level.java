@@ -122,4 +122,32 @@ public class Level {
 			}
 		} while (t.getCollisions()[Thing.TOP] || t.getCollisions()[Thing.BOTTOM] || t.getCollisions()[Thing.LEFT] || t.getCollisions()[Thing.RIGHT]);
 	}
+	
+	public int getXScroll() {
+		return xScroll;
+	}
+	public void setXScroll(int xScroll) {
+		this.xScroll = xScroll;
+	}
+	
+	public int getYScroll() {
+		return yScroll;
+	}
+	public void setYScroll(int yScroll) {
+		this.yScroll = yScroll;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
 }

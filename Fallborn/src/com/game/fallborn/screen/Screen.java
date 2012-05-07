@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.game.fallborn.level.Level;
-import com.game.fallborn.things.Player;
+import com.game.fallborn.things.alive.Player;
 
 public class Screen extends Bitmap{
 	public BufferedImage image;

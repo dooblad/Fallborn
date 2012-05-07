@@ -5,7 +5,7 @@ import java.awt.image.DataBufferInt;
 
 import com.game.fallborn.Time;
 import com.game.fallborn.level.*;
-import com.game.fallborn.things.Player;
+import com.game.fallborn.things.alive.Player;;
 
 public class LightScreen extends Bitmap {
 	public BufferedImage image;

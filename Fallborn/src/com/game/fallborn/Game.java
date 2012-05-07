@@ -13,7 +13,7 @@ import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.LightScreen;
 import com.game.fallborn.screen.Screen;
-import com.game.fallborn.things.Player;
+import com.game.fallborn.things.alive.Player;
 
 public class Game extends Canvas implements Runnable{
 	

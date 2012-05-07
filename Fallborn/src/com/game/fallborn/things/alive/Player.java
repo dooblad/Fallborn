@@ -1,4 +1,4 @@
-package com.game.fallborn.things;
+package com.game.fallborn.things.alive;
 
 import java.awt.event.KeyEvent;
 
@@ -7,8 +7,9 @@ import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.Bitmap;
 import com.game.fallborn.screen.Screen;
+import com.game.fallborn.things.Thing;
 
-public class Player extends Thing {
+public class Player extends LivingThing {
 	public double theta = 0;
 	public double sprintFactor = 2.0;
 	public boolean lightIsOn = false;
@@ -98,18 +99,18 @@ public class Player extends Thing {
 		positionY += ySpeed;
 		
 		// Scrolling the World
-		level.xScroll = (int) positionX - (screen.width - width) / 2;
-		level.yScroll = (int) positionY - (screen.height - height) / 2;
+		level.setXScroll((int) positionX - (screen.width - width) / 2);
+		level.setYScroll((int) positionY - (screen.height - height) / 2);
 
 		// Walktime Resetter
-		if(walkTime >= 10 * walkAnimationFactor) walkTime = 0;
+		if(walkTime >= 10 * animationSpeedFactor) walkTime = 0;
 	}
 
 	public void render(Screen screen) {
 		if (facingRight) {
-			screen.blit(bitmap[walkTime / walkAnimationFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
+			screen.blit(bitmap[walkTime / animationSpeedFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
 		} else if (!facingRight) {
-			screen.blitReverse(bitmap[walkTime / walkAnimationFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
+			screen.blitReverse(bitmap[walkTime / animationSpeedFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
 		}
 	}
 	
