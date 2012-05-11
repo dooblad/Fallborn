@@ -11,8 +11,9 @@ import static org.lwjgl.openal.AL10.*;
 import org.lwjgl.util.WaveData;
 
 public class Sound {
-	public static List<Integer> sounds = new ArrayList<Integer>();
-	public static final String fireSpellSoundURL = "res/fireSpell.wav";
+	private static List<IntBuffer> buffers = new ArrayList<IntBuffer>();
+	private static List<IntBuffer> sources = new ArrayList<IntBuffer>();
+	public static final IntBuffer fireSpell = loadSound("res/fireSpell.wav");
 	
 	public static void initializeSound() {
 		try {
@@ -27,23 +28,36 @@ public class Sound {
 	}
 	
 	public static void destroySound() {
-		
+		for(int i = 0; i < buffers.size(); i++) {
+			alDeleteBuffers(buffers.get(i));
+			buffers.remove(i);
+		}
+		for(int i = 0; i < sources.size(); i++) {
+			alDeleteSources(sources.get(i));
+			sources.remove(i);
+		}
+		AL.destroy();
 	}
 
-	public static void loadSound(String URL) {
+	public static IntBuffer loadSound(String URL) {
 		WaveData waveData = WaveData.create(URL);
 		IntBuffer buffer = BufferUtils.createIntBuffer(1);
 		alGenBuffers(buffer);
 		alBufferData(buffer.get(0), waveData.format, waveData.data, waveData.samplerate);
 		waveData.dispose();
-		
+		IntBuffer source = BufferUtils.createIntBuffer(1);
+		alGenSources(source);
+		alSourcei(source.get(0), AL_BUFFER, buffer.get(0));
+		buffers.add(buffer);
+		sources.add(source);
+		return source;
 	}
 
-	public static void playSound(int soundBuffer) {
-
+	public static void playSound(IntBuffer soundSource) {
+		alSourcePlay(soundSource);
 	}
 
-	public static void stopSound(int soundBuffer) {
-
+	public static void stopSound(IntBuffer soundSource) {
+		alSourceStop(soundSource);
 	}
 }

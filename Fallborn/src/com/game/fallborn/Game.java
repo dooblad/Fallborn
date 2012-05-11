@@ -67,7 +67,6 @@ public class Game extends Canvas implements Runnable{
 		thread.start();
 		}
 	}
-	@Override
 	public void run() {
 		long previousTime = System.nanoTime();
 		double secondsPerTick = 1 / 60.0;

@@ -3,6 +3,7 @@ package com.game.fallborn.menu;
 import static org.lwjgl.openal.AL10.*;
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,6 +23,7 @@ import com.game.fallborn.input.InputHandler;
 
 public class Launcher extends Canvas {
 	private JFrame frame;
+	private Point frameLocation;
 	private InputHandler input;
 	private boolean running = false;
 	private boolean inputAllowed = true;
@@ -39,6 +41,7 @@ public class Launcher extends Canvas {
 	private IntBuffer menuMusicBuffer;
 	private IntBuffer menuMusicSource;
 	private boolean musicPlaying = false;
+	
 
 	public Launcher() {
 		loadImages();
@@ -47,10 +50,12 @@ public class Launcher extends Canvas {
 		input = new InputHandler(this);
 		frame.setSize(menuBackground.getWidth(), menuBackground.getHeight());
 		frame.setLocationRelativeTo(null);
-		frame.setUndecorated(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
-		frame.setVisible(true);
 		frame.add(this);
+		frame.setUndecorated(true);
+		frame.setVisible(true);
 		running = true;
 
 		playMusic();
@@ -61,7 +66,6 @@ public class Launcher extends Canvas {
 		boolean ticked = false;
 		int fps = 0;
 		short tickCount = 0;
-		requestFocus();
 
 		while (running) {
 			long currentTime = System.nanoTime();
@@ -104,11 +108,11 @@ public class Launcher extends Canvas {
 			System.err.println("Could not initialize OpenAL");
 			System.exit(1);
 		}
+		
 		WaveData data = WaveData.create("menu.wav");
 		menuMusicBuffer = BufferUtils.createIntBuffer(1);
 		alGenBuffers(menuMusicBuffer);
 		alBufferData(menuMusicBuffer.get(0), data.format, data.data, data.samplerate);
-		data.dispose();
 		menuMusicSource = BufferUtils.createIntBuffer(1);
 		alGenSources(menuMusicSource);
 		alSourcei(menuMusicSource.get(0), AL_BUFFER, menuMusicBuffer.get(0));
@@ -120,6 +124,8 @@ public class Launcher extends Canvas {
 	}
 
 	private void tick() {
+		input.tick();
+		
 		if (inputAllowed) {
 			if (input.mouseX > playButtonX && input.mouseX < playButtonX + playButtonText.getWidth() &&
 				input.mouseY > playButtonY && input.mouseY < playButtonY + playButtonText.getHeight()) {
@@ -157,9 +163,13 @@ public class Launcher extends Canvas {
 					}
 				}
 			}
-			if(input.mousePressed) {
-				
-			}
+			//if(input.mousePressed) {
+				frameLocation = frame.getLocationOnScreen();
+				//System.out.println("DX: " + (input.mouseX - input.oldMouseX) + " DY: " + (input.mouseY - input.oldMouseY));
+				System.out.println("X: " + input.mouseX + " OldX: " + input.oldMouseX);
+				//System.out.println("Y: " + input.mouseY + " OldY: " + input.oldMouseY);
+				//frame.setLocation(frameLocation.x + (input.mouseX - input.oldMouseX), frameLocation.y + (input.mouseY - input.oldMouseY));
+			//}
 		}
 		
 	}

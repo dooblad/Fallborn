@@ -21,6 +21,6 @@ public class Screen extends Bitmap{
 	public void render(Level level, Player player) {
 		fill(0xFF000000);
 		level.render(this);
-		player.render(this);
+		player.render(level, this);
 	}
 }

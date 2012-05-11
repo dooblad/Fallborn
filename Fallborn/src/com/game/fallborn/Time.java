@@ -1,9 +1,9 @@
 package com.game.fallborn;
 
 public class Time {
-	private long dayLength = 5000;
+	private long dayLength = 10000;
 	private long nightLength = (long)(dayLength * 1.0 / 3.0);
-	private long time = dayLength - nightLength;
+	private long time = 0;
 	private double dayToNightRatio = ((double) dayLength) / nightLength;
 	
 	public void tick() {

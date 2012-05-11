@@ -7,11 +7,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Art {
-	public static final Bitmap fallBorn = loadImage("res/fallBorn.png");
-	public static final Bitmap fallBornBig = Scale2X.scaleUp(loadImage("res/fallBorn.png"));
 	public static final Bitmap[][] fallBornSheet = loadSpriteSheet("res/fallBornSheet.png", 15, 3);
 	public static final Bitmap[][] staticTiles = loadSpriteSheet("res/staticTiles.png", 5, 5);
 	public static final Bitmap[][] buildingTiles = loadSpriteSheet("res/buildingTiles.png", 5, 5);
+	public static final Bitmap fireBall = loadImage("res/fireBall.png");
+	public static final Bitmap inventorySlot = loadImage("res/inventorySlot.png");
+	public static final Bitmap inventorySelected = loadImage("res/inventorySelected.png");
 
 	private static Bitmap loadImage(String URL) {
 		try {
