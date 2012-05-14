@@ -28,6 +28,11 @@ public class Sound {
 	}
 	
 	public static void destroySound() {
+		try {
+			AL.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 		for(int i = 0; i < buffers.size(); i++) {
 			alDeleteBuffers(buffers.get(i));
 			buffers.remove(i);
@@ -40,6 +45,11 @@ public class Sound {
 	}
 
 	public static IntBuffer loadSound(String URL) {
+		try {
+			AL.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 		WaveData waveData = WaveData.create(URL);
 		IntBuffer buffer = BufferUtils.createIntBuffer(1);
 		alGenBuffers(buffer);
@@ -54,10 +64,20 @@ public class Sound {
 	}
 
 	public static void playSound(IntBuffer soundSource) {
+		try {
+			AL.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 		alSourcePlay(soundSource);
 	}
 
 	public static void stopSound(IntBuffer soundSource) {
+		try {
+			AL.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 		alSourceStop(soundSource);
 	}
 }

@@ -12,7 +12,7 @@ import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
 import com.game.fallborn.screen.LightScreen;
-import com.game.fallborn.screen.Screen;
+import com.game.fallborn.screen.MainScreen;
 import com.game.fallborn.things.alive.Player;
 
 public class Game extends Canvas implements Runnable{
@@ -22,7 +22,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private static Game game;
 	private static JFrame frame;
-	private Screen screen;
+	private MainScreen screen;
 	private LightScreen lightScreen;
 	private Thread thread;
 	private boolean running = false;
@@ -35,10 +35,10 @@ public class Game extends Canvas implements Runnable{
 	public InputHandler input;
 	public Time time;
 	
-	public static final int GAME_WIDTH = 640;
+	public static final int GAME_WIDTH = 320;
 	//Maintains a nice aspect ratio
 	public static final int GAME_HEIGHT = GAME_WIDTH * 3 / 4;
-	public static final int GAME_SCALE = 1;
+	public static final int GAME_SCALE = 2;
 	
 	public Game() {
 		frame = new JFrame(GAME_NAME);
@@ -50,7 +50,7 @@ public class Game extends Canvas implements Runnable{
 		frame.setResizable(false);
 		frame.add(this);
 		frame.setVisible(true);
-		screen = new Screen(GAME_WIDTH, GAME_HEIGHT);
+		screen = new MainScreen(GAME_WIDTH, GAME_HEIGHT);
 		lightScreen = new LightScreen(GAME_WIDTH, GAME_HEIGHT);
 		//Sound.initializeSound();
 		level = new Level("res/level.png", 20);
@@ -112,6 +112,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public void tick() {
 		player.tick(input, level, screen);
+		player.gui.tick();
 		time.tick();
 	}
 	
@@ -123,19 +124,18 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen.render(level, player);
-		
 		if(time.isNightTime()) {
 			lightScreen.render(level, player, time);
 		}
+		player.gui.render();
 		
 		
 		Graphics g = bs.getDrawGraphics();
-		
 		g.drawImage(screen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
-		
 		if(time.isNightTime()) {
 			g.drawImage(lightScreen.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		}
+		g.drawImage(player.gui.image, 0, 0, GAME_WIDTH * GAME_SCALE, GAME_HEIGHT * GAME_SCALE, null);
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 80, 15);

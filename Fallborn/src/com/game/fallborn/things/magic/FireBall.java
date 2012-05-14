@@ -2,7 +2,7 @@ package com.game.fallborn.things.magic;
 
 import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Art;
-import com.game.fallborn.screen.Screen;
+import com.game.fallborn.screen.MainScreen;
 import com.game.fallborn.sound.Sound;
 import com.game.fallborn.things.Direction;
 import com.game.fallborn.things.alive.Player;
@@ -19,7 +19,7 @@ public class FireBall extends Spell{
 		this.height = Art.fireBall.height;
 	}
 	
-	public void castSpell(Player player, Screen screen, Direction direction) {
+	public void castSpell(Player player, MainScreen screen, Direction direction) {
 		positionX = player.positionX;
 		positionY = player.positionY;
 		player.livingSpells.add(this);
@@ -45,7 +45,7 @@ public class FireBall extends Spell{
 	    positionX += xSpeed;
 		positionY += ySpeed;
 	}
-	public void render(Level level, Screen screen, Player player) {
+	public void render(Level level, MainScreen screen, Player player) {
 		screen.blit(Art.fireBall, (int) positionX - level.getXScroll(), (int) positionY - level.getYScroll());
 	}
 }

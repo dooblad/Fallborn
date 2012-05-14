@@ -7,10 +7,9 @@ import com.game.fallborn.Time;
 import com.game.fallborn.level.*;
 import com.game.fallborn.things.alive.Player;;
 
-public class LightScreen extends Bitmap {
-	public BufferedImage image;
-	private double radius = 150;
-	private double angleSpread = 120;
+public class LightScreen extends Screen {
+	private double radius = 100;
+	private double angleSpread = 100;
 	private double lowAngle, highAngle;
 
 	private double nightAlphaIncrement;
@@ -18,18 +17,12 @@ public class LightScreen extends Bitmap {
 	private int nightColor = 0x00000B;
 	private int currentNightAlpha = 0;
 	
-	//private int lightColor = 0x100606;
-	//private float lightAlphaIncrement = (float) (0x91 / (radius));
-
-	
 	/**
 	 * @param width specifies the width of this screen
 	 * @param height specifies the height of this screen
 	 */
 	public LightScreen(int width, int height) {
 		super(width, height);
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	}
 
 	public void render(Level level, Player player, Time time) {
@@ -69,5 +62,19 @@ public class LightScreen extends Bitmap {
 				}
 			}
 		}
+	}
+	
+	public double getRadius() {
+		return radius;
+	}
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
+	
+	public double getAngleSpread() {
+		return angleSpread;
+	}
+	public void setAngleSpread(double angleSpread) {
+		this.angleSpread = angleSpread;
 	}
 }

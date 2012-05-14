@@ -4,13 +4,15 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.game.GUI.GUI;
+import com.game.GUI.Inventory;
+import com.game.fallborn.Game;
 import com.game.fallborn.input.InputHandler;
 import com.game.fallborn.level.Level;
 import com.game.fallborn.screen.Bitmap;
-import com.game.fallborn.screen.Screen;
+import com.game.fallborn.screen.MainScreen;
 import com.game.fallborn.things.Direction;
 import com.game.fallborn.things.Thing;
-import com.game.fallborn.things.inventory.Inventory;
 import com.game.fallborn.things.magic.FireBall;
 import com.game.fallborn.things.magic.Spell;
 import com.game.fallborn.things.magic.Spells;
@@ -23,7 +25,7 @@ public class Player extends LivingThing {
 	public boolean[] knownSpells = new boolean[Spells.numberOfSpells];
 	public List<Spell> livingSpells = new ArrayList<Spell>();
 	public int spellCooldown = 0;
-	public Inventory inventory;
+	public GUI gui;
 	
 	public Player(Bitmap[][] bitmap, int positionX, int positionY) {
 		this.positionX = positionX;
@@ -32,10 +34,10 @@ public class Player extends LivingThing {
 		this.width = bitmap[0][0].width;
 		this.height = bitmap[0][0].height;
 		knownSpells[Spells.FIRE_BALL.index] = true;
-		inventory = new Inventory(4);
+		gui = new GUI(Game.GAME_WIDTH * Game.GAME_SCALE, Game.GAME_HEIGHT * Game.GAME_SCALE, 4);
 	}
 
-	public void tick(InputHandler input, Level level, Screen screen) {
+	public void tick(InputHandler input, Level level, MainScreen screen) {
 		// Y Movement
 		if (input.keys[KeyEvent.VK_W]) {
 			ySpeed = -walkSpeed;
@@ -71,23 +73,31 @@ public class Player extends LivingThing {
 			lightToggled = false;
 		}
 		
+		// Testing Inventory
+		if(input.keys[KeyEvent.VK_UP]) {
+			gui.inventory.setSize(gui.inventory.getSize() + 1);
+		}
+		else if (input.keys[KeyEvent.VK_DOWN]) {
+			gui.inventory.setSize(gui.inventory.getSize() - 1);
+		}
+		
 		// Inventory slot selection
 		if(input.keys[KeyEvent.VK_1]) {
-			inventory.setSelected(0); // 'tis 0 because of ye olde array indices beginneth at 0
+			gui.inventory.setSelected(0); // 'tis 0 because of ye olde array indices beginneth at 0
 		}
 		else if(input.keys[KeyEvent.VK_2]) {
-			inventory.setSelected(1);
+			gui.inventory.setSelected(1);
 		}
 		else if(input.keys[KeyEvent.VK_3]) {
-			inventory.setSelected(2);
+			gui.inventory.setSelected(2);
 		}
 		else if(input.keys[KeyEvent.VK_4]) {
-			inventory.setSelected(3);
+			gui.inventory.setSelected(3);
 		}
 		
 		// Mouse Computing
-		float opposite = input.mouseY - screen.height / 2;
-		float adjacent = input.mouseX - screen.width / 2;
+		float opposite = input.mouseY - screen.height * Game.GAME_SCALE / 2;
+		float adjacent = input.mouseX - screen.width * Game.GAME_SCALE / 2;
 		double inverseTan = Math.toDegrees(Math.atan(opposite / adjacent));
 		if(adjacent >= 0)
 			theta = inverseTan;
@@ -131,12 +141,9 @@ public class Player extends LivingThing {
 
 		// Walktime Resetter
 		if(walkTime >= 10 * animationSpeedFactor) walkTime = 0;
-		
-		// Inventory Calculations
-		inventory.tick();
 	}
 
-	public void render(Level level, Screen screen) {
+	public void render(Level level, MainScreen screen) {
 		if (facingRight) {
 			screen.blit(bitmap[walkTime / animationSpeedFactor][0], (screen.width - width) / 2, (screen.height - height) / 2);
 		} else if (!facingRight) {
@@ -151,8 +158,6 @@ public class Player extends LivingThing {
 					((FireBall) livingSpells.get(i)).render(level, screen, this);	
 			}
 		}
-		
-		inventory.render(screen);
 	}
 	
 	public boolean getLightIsOn() {

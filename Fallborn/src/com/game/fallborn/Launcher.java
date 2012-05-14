@@ -1,4 +1,4 @@
-package com.game.fallborn.menu;
+package com.game.fallborn;
 
 import static org.lwjgl.openal.AL10.*;
 import java.awt.Canvas;
@@ -18,7 +18,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.util.WaveData;
 
-import com.game.fallborn.Game;
 import com.game.fallborn.input.InputHandler;
 
 public class Launcher extends Canvas {

@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.game.fallborn.screen.Art;
-import com.game.fallborn.screen.Screen;
+import com.game.fallborn.screen.MainScreen;
 import com.game.fallborn.things.Thing;
 
 public class Level {
@@ -59,7 +59,7 @@ public class Level {
 		// eventually semi-random
 	}
 
-	public void render(Screen screen) {
+	public void render(MainScreen screen) {
 		// eventually only render the visible area
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
